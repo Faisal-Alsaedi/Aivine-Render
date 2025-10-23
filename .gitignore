@@ -143,6 +143,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+aivine_env/
+.kaggle/
+.vscode/
 
 # Spyder project settings
 .spyderproject
@@ -205,3 +208,7 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# exclude dataset and all raw data
+data/
+outputs/
