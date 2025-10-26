@@ -1,0 +1,2 @@
+Model,Total_Parameters,Test_Accuracy,Test_Loss,Top3_Accuracy,Macro_F1,Weighted_F1,Training_Epochs_Phase1,Training_Epochs_Phase2,Total_Training_Epochs
+MobileNetV2,2597975,0.9908972978591919,0.09983442723751068,1.0,0.9931624254987915,0.9908848807030971,30,20,50

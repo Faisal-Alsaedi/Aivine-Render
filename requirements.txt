@@ -6,6 +6,7 @@ python-dotenv==1.0.1
 
 # --- Machine Learning & Model Export ---
 tensorflow==2.15.0
+tensorflow[and-cuda]>=2.15,<2.17
 tensorflow-model-optimization==0.8.0
 scikit-learn==1.5.2
 albumentations==1.4.4
