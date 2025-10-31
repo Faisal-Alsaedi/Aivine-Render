@@ -1,5 +1,5 @@
 # ====================================================
-# 🧠 Aivine Project .gitignore (Customized)
+# 🧠 Aivine Project .gitignore (Clean & Fixed)
 # ====================================================
 
 # --- Python cache & compiled files ---
@@ -43,30 +43,36 @@ Thumbs.db
 .cursorignore
 .cursorindexingignore
 
-# --- Datasets & training data (excluded to keep repo light) ---
+# --- Datasets & large local data (excluded) ---
 raw_data/
 data/
 datasets/
 dataset_flat_structure/
 small_dataset/
-outputs/        # ❗ note: renamed to outputs (was outputs/) to avoid confusion
+downloads/
+temp/
 
-# --- Keep models but ignore large checkpoints ---
+# --- Output directory (ignored by default) ---
+output/
+
+# ✅ Allow trained models inside output/models/
 !output/models/
-output/models/**/*.h5
-output/models/**/*.keras
-output/models/**/*.pkl
-!output/models/plant_model/best_model_svm.pkl
-!output/models/disease_model/mobilenetv2_plant_disease_final.keras
+!output/models/plant_model/
+!output/models/disease_model/
 
-# --- Ignore local experiments / results ---
-notebooks/.ipynb_checkpoints/
+# ✅ Include specific model files for deployment
+!output/models/plant_model/best_model_svm.pkl
+!output/models/disease_model/mobilenetv2_plant_disease_final.h5
+!output/models/disease_model/mobilenetv2_plant_disease_final.keras
+!output/models/disease_model/disease_detector.tflite
+
+# --- Ignore local experiment results ---
 logs/
 checkpoints/
 runs/
 experiments/
 
-# --- Environment variables ---
+# --- Environment & secrets ---
 .env
 .envrc
 
@@ -80,11 +86,6 @@ htmlcov/
 coverage.xml
 reports/
 site/
-
-# --- Misc project-specific ignores ---
-raw_data/
-downloads/
-temp/
 __marimo__/
 marimo/_static/
 marimo/_lsp/
