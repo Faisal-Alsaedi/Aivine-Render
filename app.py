@@ -51,23 +51,31 @@ html, body, [class*="css"]  {
 # Logo Display
 # ====================================================
 try:
+    import os
+    from PIL import Image, ImageOps
+
+    # --- Build absolute path for cross-platform safety ---
     base_path = os.path.dirname(os.path.abspath(__file__))
     logo_path = os.path.join(base_path, "Logo.png")
 
+    # --- Load and display logo if found ---
     if os.path.exists(logo_path):
         logo = Image.open(logo_path)
-        # 🔹 تحكم بحجم الشعار هنا (جرّب 100 أو 120 إذا تبي أصغر)
-        base_width = 120
-        w_percent = (base_width / float(logo.width))
-        h_size = int((float(logo.height) * float(w_percent)))
+
+        # Resize logo proportionally
+        base_width = 120  # 👈 adjust size here if needed (100–150 recommended)
+        w_percent = base_width / float(logo.width)
+        h_size = int(float(logo.height) * w_percent)
         logo_resized = logo.resize((base_width, h_size), Image.LANCZOS)
 
+        # Add transparent padding
         padding = 5
         logo_with_padding = ImageOps.expand(logo_resized, border=padding, fill=(255, 255, 255, 0))
 
+        # Display inside a left-aligned column
         col_logo, _ = st.columns([2, 1])
         with col_logo:
-            st.image(logo_with_padding, use_container_width=False)
+            st.image(logo_with_padding)
     else:
         st.warning("⚠️ Logo not found. Please ensure 'Logo.png' exists in the project root.")
 except Exception as e:
