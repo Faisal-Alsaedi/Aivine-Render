@@ -51,25 +51,37 @@ html, body, [class*="css"]  {
 # ====================================================
 @st.cache_resource
 def load_models():
+    import tensorflow as tf
     base_path = os.getcwd()
+
+    # --- Paths ---
     plant_model_path = os.path.join(base_path, "output", "models", "plant_model", "best_model_svm.pkl")
     disease_model_path = os.path.join(base_path, "output", "models", "disease_model", "mobilenetv2_plant_disease_final.keras")
 
+    # --- Load Plant Type Model ---
     if os.path.exists(plant_model_path):
         plant_model = joblib.load(plant_model_path)
     else:
-        st.warning(f"⚠️ Plant type model not found at: {plant_model_path}")
+        st.warning(f"Plant type model not found at: {plant_model_path}")
         plant_model = None
 
-    feature_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=(128,128,3), pooling='avg')
+    # --- Load Feature Extractor ---
+    feature_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=(128, 128, 3), pooling='avg')
 
+    # --- Load Disease Detection Model ---
     if os.path.exists(disease_model_path):
-        disease_model = keras.models.load_model(disease_model_path, compile=False)
+        try:
+            disease_model = tf.keras.models.load_model(disease_model_path, compile=False)
+            st.success(f"Disease model loaded successfully from: {disease_model_path}")
+        except Exception as e:
+            st.error(f"Failed to load disease model: {e}")
+            disease_model = None
     else:
-        st.warning(f"⚠️ Disease model not found at: {disease_model_path}")
+        st.warning(f"Disease model not found at: {disease_model_path}")
         disease_model = None
 
     return plant_model, feature_model, disease_model
+
 
 
 
@@ -77,7 +89,7 @@ def load_models():
 plant_model, feature_model, disease_model = load_models()
 
 if plant_model is None or disease_model is None:
-    st.error("❌ One or more models could not be loaded. Please check the model paths or upload them again.")
+    st.error("One or more models could not be loaded. Please check the model paths or upload them again.")
     st.stop()
 # ====================================================
 # Class Lists
