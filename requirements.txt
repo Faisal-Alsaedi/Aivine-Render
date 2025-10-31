@@ -5,7 +5,6 @@ python-dotenv==1.0.1
 
 # --- Machine Learning & Deep Learning ---
 tensorflow==2.15.0
-tensorflow-model-optimization==0.8.0
 scikit-learn==1.5.2
 albumentations==1.4.4
 
@@ -19,10 +18,4 @@ seaborn==0.13.2
 
 # --- App Deployment ---
 streamlit==1.38.0
-fastapi==0.115.2
-uvicorn[standard]==0.32.0
-
-# --- Google Cloud (optional, if your model loads from GCS) ---
-google-cloud-storage==2.18.2
-google-cloud-secret-manager==2.21.1
-google-cloud-aiplatform==1.72.0
+joblib==1.4.2
