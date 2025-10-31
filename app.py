@@ -51,31 +51,26 @@ html, body, [class*="css"]  {
 # ====================================================
 @st.cache_resource
 def load_models():
-    base_path = os.path.dirname(os.path.abspath(__file__))
-
-    # --- Model paths ---
+    base_path = os.getcwd()
     plant_model_path = os.path.join(base_path, "output", "models", "plant_model", "best_model_svm.pkl")
     disease_model_path = os.path.join(base_path, "output", "models", "disease_model", "mobilenetv2_plant_disease_final.h5")
 
-    # --- Load Plant Type Model ---
     if os.path.exists(plant_model_path):
         plant_model = joblib.load(plant_model_path)
     else:
-        st.warning("⚠️ Plant type model not found at 'output/models/plant_model/best_model_svm.pkl'.")
+        st.warning(f"⚠️ Plant type model not found at: {plant_model_path}")
         plant_model = None
 
-    # --- Load Feature Extractor ---
     feature_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=(128,128,3), pooling='avg')
 
-    # --- Load Disease Model ---
     if os.path.exists(disease_model_path):
         disease_model = keras.models.load_model(disease_model_path, compile=False)
-
     else:
-        st.warning("⚠️ Disease model not found at 'output/models/disease_model/mobilenetv2_plant_disease_final.h5'.")
+        st.warning(f"⚠️ Disease model not found at: {disease_model_path}")
         disease_model = None
 
     return plant_model, feature_model, disease_model
+
 
 
 # Load models once (cached)
