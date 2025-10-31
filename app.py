@@ -55,7 +55,7 @@ def load_models():
 
     # --- Model paths ---
     plant_model_path = os.path.join(base_path, "output", "models", "plant_model", "best_model_svm.pkl")
-    disease_model_path = os.path.join(base_path, "output", "models", "disease_model", "mobilenetv2_plant_disease_final.keras")
+    disease_model_path = os.path.join(base_path, "output", "models", "disease_model", "mobilenetv2_plant_disease_final.h5")
 
     # --- Load Plant Type Model ---
     if os.path.exists(plant_model_path):
@@ -72,7 +72,7 @@ def load_models():
         disease_model = keras.models.load_model(disease_model_path, compile=False)
 
     else:
-        st.warning("⚠️ Disease model not found at 'output/models/disease_model/mobilenetv2_plant_disease_final.keras'.")
+        st.warning("⚠️ Disease model not found at 'output/models/disease_model/mobilenetv2_plant_disease_final.h5'.")
         disease_model = None
 
     return plant_model, feature_model, disease_model
@@ -81,7 +81,9 @@ def load_models():
 # Load models once (cached)
 plant_model, feature_model, disease_model = load_models()
 
-
+if plant_model is None or disease_model is None:
+    st.error("❌ One or more models could not be loaded. Please check the model paths or upload them again.")
+    st.stop()
 # ====================================================
 # Class Lists
 # ====================================================
