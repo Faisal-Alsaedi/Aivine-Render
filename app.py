@@ -10,6 +10,7 @@ from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input
 import joblib
 from PIL import Image, ImageOps
+import keras
 
 # ====================================================
 # Page Configuration (must be first)
@@ -19,37 +20,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
-# ====================================================
-# Logo Display (Safe + Cross-platform)
-# ====================================================
-import os
-
-try:
-    # --- Build absolute path for Streamlit Cloud compatibility ---
-    base_path = os.path.dirname(os.path.abspath(__file__))
-    logo_path = os.path.join(base_path, "Logo.png")
-
-    # --- Load logo if exists ---
-    if os.path.exists(logo_path):
-        logo = Image.open(logo_path)
-        base_width = 150
-        w_percent = (base_width / float(logo.width))
-        h_size = int((float(logo.height) * float(w_percent)))
-        logo_resized = logo.resize((base_width, h_size), Image.LANCZOS)
-
-        padding = 10
-        logo_with_padding = ImageOps.expand(logo_resized, border=padding, fill=(255, 255, 255, 0))
-
-        # --- Display in left column ---
-        col_logo, _ = st.columns([2, 1])
-        with col_logo:
-            st.image(logo_with_padding, use_container_width=False)
-    else:
-        st.warning("⚠️ Logo not found. Please ensure 'Logo.png' exists in the project root.")
-except Exception as e:
-    st.error(f"🚫 Error loading logo: {e}")
-
 
 # ====================================================
 # Dark Mode Style
@@ -99,7 +69,8 @@ def load_models():
 
     # --- Load Disease Model ---
     if os.path.exists(disease_model_path):
-        disease_model = load_model(disease_model_path)
+        disease_model = keras.models.load_model(disease_model_path, compile=False)
+
     else:
         st.warning("⚠️ Disease model not found at 'output/models/disease_model/mobilenetv2_plant_disease_final.keras'.")
         disease_model = None
