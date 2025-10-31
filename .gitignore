@@ -1,5 +1,5 @@
 # ====================================================
-# 🧠 Aivine Project .gitignore (Clean & Fixed)
+# 🧠 Aivine Project .gitignore (Final & Clean)
 # ====================================================
 
 # --- Python cache & compiled files ---
@@ -60,7 +60,7 @@ output/
 !output/models/plant_model/
 !output/models/disease_model/
 
-# ✅ Include specific model files for deployment
+# ✅ Include only the required model files for Streamlit deployment
 !output/models/plant_model/best_model_svm.pkl
 !output/models/disease_model/mobilenetv2_plant_disease_final.h5
 !output/models/disease_model/mobilenetv2_plant_disease_final.keras

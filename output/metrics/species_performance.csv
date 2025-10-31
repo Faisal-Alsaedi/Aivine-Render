@@ -1,6 +1,0 @@
-Species,Accuracy,Total_Samples,Correct_Predictions
-Rose,0.98572501878287,1331,1312
-Chrysanthemum,0.987012987012987,231,228
-Turmeric,0.9904610492845787,629,623
-Hibiscus,1.0,480,480
-Money Plant,1.0,405,405
