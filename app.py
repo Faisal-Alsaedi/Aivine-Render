@@ -46,6 +46,34 @@ html, body, [class*="css"]  {
 </style>
 """, unsafe_allow_html=True)
 
+
+# ====================================================
+# Logo Display
+# ====================================================
+try:
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    logo_path = os.path.join(base_path, "Logo.png")
+
+    if os.path.exists(logo_path):
+        logo = Image.open(logo_path)
+        # 🔹 تحكم بحجم الشعار هنا (جرّب 100 أو 120 إذا تبي أصغر)
+        base_width = 120
+        w_percent = (base_width / float(logo.width))
+        h_size = int((float(logo.height) * float(w_percent)))
+        logo_resized = logo.resize((base_width, h_size), Image.LANCZOS)
+
+        padding = 5
+        logo_with_padding = ImageOps.expand(logo_resized, border=padding, fill=(255, 255, 255, 0))
+
+        col_logo, _ = st.columns([2, 1])
+        with col_logo:
+            st.image(logo_with_padding, use_container_width=False)
+    else:
+        st.warning("⚠️ Logo not found. Please ensure 'Logo.png' exists in the project root.")
+except Exception as e:
+    st.error(f"🚫 Error loading logo: {e}")
+
+
 # ====================================================
 # Load Models (cached for performance)
 # ====================================================
@@ -72,7 +100,6 @@ def load_models():
     if os.path.exists(disease_model_path):
         try:
             disease_model = tf.keras.models.load_model(disease_model_path, compile=False)
-            st.success(f"Disease model loaded successfully from: {disease_model_path}")
         except Exception as e:
             st.error(f"Failed to load disease model: {e}")
             disease_model = None
