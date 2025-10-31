@@ -21,21 +21,35 @@ st.set_page_config(
 )
 
 # ====================================================
-# Logo Display
+# Logo Display (Safe + Cross-platform)
 # ====================================================
+import os
+
 try:
-    logo = Image.open("Logo.png")
-    base_width = 150
-    w_percent = (base_width / float(logo.width))
-    h_size = int((float(logo.height) * float(w_percent)))
-    logo_resized = logo.resize((base_width, h_size), Image.LANCZOS)
-    padding = 10
-    logo_with_padding = ImageOps.expand(logo_resized, border=padding, fill=(255, 255, 255, 0))
-    col_logo, _ = st.columns([2, 1])
-    with col_logo:
-        st.image(logo_with_padding, use_container_width=False)
+    # --- Build absolute path for Streamlit Cloud compatibility ---
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    logo_path = os.path.join(base_path, "Logo.png")
+
+    # --- Load logo if exists ---
+    if os.path.exists(logo_path):
+        logo = Image.open(logo_path)
+        base_width = 150
+        w_percent = (base_width / float(logo.width))
+        h_size = int((float(logo.height) * float(w_percent)))
+        logo_resized = logo.resize((base_width, h_size), Image.LANCZOS)
+
+        padding = 10
+        logo_with_padding = ImageOps.expand(logo_resized, border=padding, fill=(255, 255, 255, 0))
+
+        # --- Display in left column ---
+        col_logo, _ = st.columns([2, 1])
+        with col_logo:
+            st.image(logo_with_padding, use_container_width=False)
+    else:
+        st.warning("⚠️ Logo not found. Please ensure 'Logo.png' exists in the project root.")
 except Exception as e:
-    st.warning("⚠️ Logo could not be loaded. Make sure 'Logo.png' is in the project folder.")
+    st.error(f"🚫 Error loading logo: {e}")
+
 
 # ====================================================
 # Dark Mode Style
@@ -67,13 +81,35 @@ html, body, [class*="css"]  {
 # ====================================================
 @st.cache_resource
 def load_models():
-    base_path = os.path.dirname(__file__)
-    plant_model = joblib.load(os.path.join(base_path, "output/models/plant_model/best_model_svm.pkl"))
+    base_path = os.path.dirname(os.path.abspath(__file__))
+
+    # --- Model paths ---
+    plant_model_path = os.path.join(base_path, "output", "models", "plant_model", "best_model_svm.pkl")
+    disease_model_path = os.path.join(base_path, "output", "models", "disease_model", "mobilenetv2_plant_disease_final.keras")
+
+    # --- Load Plant Type Model ---
+    if os.path.exists(plant_model_path):
+        plant_model = joblib.load(plant_model_path)
+    else:
+        st.warning("⚠️ Plant type model not found at 'output/models/plant_model/best_model_svm.pkl'.")
+        plant_model = None
+
+    # --- Load Feature Extractor ---
     feature_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=(128,128,3), pooling='avg')
-    disease_model = load_model(os.path.join(base_path, "output/models/disease_model/mobilenetv2_plant_disease_final.keras"))
+
+    # --- Load Disease Model ---
+    if os.path.exists(disease_model_path):
+        disease_model = load_model(disease_model_path)
+    else:
+        st.warning("⚠️ Disease model not found at 'output/models/disease_model/mobilenetv2_plant_disease_final.keras'.")
+        disease_model = None
+
     return plant_model, feature_model, disease_model
 
+
+# Load models once (cached)
 plant_model, feature_model, disease_model = load_models()
+
 
 # ====================================================
 # Class Lists
