@@ -53,7 +53,7 @@ html, body, [class*="css"]  {
 def load_models():
     base_path = os.getcwd()
     plant_model_path = os.path.join(base_path, "output", "models", "plant_model", "best_model_svm.pkl")
-    disease_model_path = os.path.join(base_path, "output", "models", "disease_model", "mobilenetv2_plant_disease_final.h5")
+    disease_model_path = os.path.join(base_path, "output", "models", "disease_model", "mobilenetv2_plant_disease_final.keras")
 
     if os.path.exists(plant_model_path):
         plant_model = joblib.load(plant_model_path)

@@ -5,7 +5,8 @@ tqdm==4.66.5
 python-dotenv==1.0.1
 
 # --- Machine Learning & Model Export ---
-tensorflow==2.20.0
+tensorflow==2.15.0
+keras==2.15.0
 scikit-learn==1.5.2
 albumentations==1.4.4
 opencv-python-headless==4.10.0.84
