@@ -53,11 +53,11 @@ h1, h2, h3, h4, h5, h6, p, span {color: #E0E0E0;}
 # -----------------------------
 # Load Models
 # -----------------------------
-plant_model = joblib.load("best_model_svm.pkl")
+plant_model = joblib.load("output/models/plant_model/best_model_svm.pkl")
 plant_classes = ["Chrysanthemum", "Hibiscus", "Money Plant", "Rose", "Turmeric"]
 feature_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=(128,128,3), pooling='avg')
 
-disease_model = load_model("output/models/mobilenetv2_plant_disease_final.keras")
+disease_model = load_model("output/models/disease_model/mobilenetv2_plant_disease_final.keras")
 disease_classes = [
     "Chrysanthemum_Healthy","Chrysanthemum_Bacterial_Leaf_Spot","Chrysanthemum_Septoria_Leaf_Spot",
     "Hibiscus_Healthy","Hibiscus_Blight","Hibiscus_Necrosis","Hibiscus_Scorch",
